@@ -11,7 +11,7 @@ class Calculate():
     def calc(self, u, t0, t1):
         solv = sci.solve_ivp(self.ode, (t0, t1), self.state_sv, args=(u,))
         self.state_sv = solv.y.T[1]
-        return solv.y.T[0]
+        return solv.y.T[0][0]
 
 
 class PT1_Glied(Calculate):
@@ -39,14 +39,19 @@ class I_Glied(Calculate):
 class D_Glied:
     def __init__(self, Kd, u_init=None):
         self.Kd = Kd
-        self.u_past = u_init
+        self.u_past = 0
+        self.u_past_2 = 0
 
-    def calc(self, u):
+    def calc(self, u, h):
         if self.u_past is None:
             self.u_past = u
-        u_grad = [self.u_past, u]
-        du = np.gradient(u_grad)
+
+        #u_grad = [self.u_past, u]
+        #du = np.gradient(u_grad)
+        du = (u - self.u_past)/h
+        self.u_past_2 = self.u_past
         self.u_past = u
+
         return du * self.Kd
 
 
