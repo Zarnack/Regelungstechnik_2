@@ -1,7 +1,8 @@
 import numpy as np
 import scipy.integrate as sci
 
-class Calculate():
+
+class Calculate:
     def __init__(self, state_sv):
         self.state_sv = [state_sv]
 
@@ -10,7 +11,7 @@ class Calculate():
 
     def calc(self, u, t0, t1):
         solv = sci.solve_ivp(self.ode, (t0, t1), self.state_sv, args=(u,))
-        self.state_sv = solv.y.T[1]
+        self.state_sv = solv.y.T[1:, 0]
         return solv.y.T[0][0]
 
 
@@ -39,20 +40,15 @@ class I_Glied(Calculate):
 class D_Glied:
     def __init__(self, Kd, u_init=None):
         self.Kd = Kd
-        self.u_past = 0
-        self.u_past_2 = 0
+        self.u_past = u_init
 
     def calc(self, u, h):
         if self.u_past is None:
             self.u_past = u
-
-        #u_grad = [self.u_past, u]
-        #du = np.gradient(u_grad)
-        du = (u - self.u_past)/h
-        self.u_past_2 = self.u_past
+        u_grad = [self.u_past, u]
+        du = np.gradient(u_grad, h)
         self.u_past = u
-
-        return du * self.Kd
+        return du[0] * self.Kd
 
 
 class P_Glied:
@@ -86,7 +82,6 @@ class Inputfunction:
 
     def jump(self, t):
         return self.w0 if t < self.t0 else self.w1
-        #return 0.5*(self.w1-self.w0)*(np.sign(t-self.t0)+1)+self.w0
 
     def jump_v(self, t):
         u1 = np.ones(t.size)*self.w0
