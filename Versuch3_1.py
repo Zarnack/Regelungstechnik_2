@@ -6,10 +6,9 @@ import Function_Blocks as FB
 import time
 
 # zu plottende Aufgabe, Arbeitspunkt und Strecke auswählen
-Aufgabennummer = 1
-A1 = True
-normaleStrecke = True
-
+Aufgabennummer = 3
+A1 = True               
+normaleStrecke = True   
 
 class Parameters(object):
     pass
@@ -53,7 +52,7 @@ if A1:
     Kp_p21 = -0.2
     Ti_p21 = 1
     Ti_p22 = 1.2
-else:
+else:                   #A2
     Ti_p11 = 0.4
     Ti_p12 = -1.28
     Kp_p21 = -0.32
@@ -65,7 +64,7 @@ if normaleStrecke:
     Ti_r11 = 1.291
     Kp_r22 = 0.566
     Ti_r22 = 1.291
-else:
+else:                   #resultierende Strecke
     Kp_r11 = 2.972
     Ti_r11 = 9.950
     Kp_r22 = 0.991
@@ -84,16 +83,56 @@ P11_block = FB.I_Glied(Ti_p11)
 P21_block = FB.PT1_Glied(Kp_p21, Ti_p21)
 P12_block = FB.I_Glied(Ti_p12)
 P22_block = FB.I_Glied(Ti_p22)
+V11_block = FB.P_Glied(1)
+V22_block = FB.P_Glied(1)
+V12_block = FB.P_Glied(3.2)
+V21_block = FB.DT1_Glied(0.27, 1) 
 calc = FB.Simple_Calc()
 
 x1 = 0.0
 x2 = 0.0
+y_V12 = 0
+y_V21 = 0
 h = sim_para.h
 
 # starte Timer zur Simulationszeitberechnung
 time1 = time.perf_counter()
 # Simulation
 if Aufgabennummer == 1:
+    for x in range(len(tt)):
+        t = tt[x]
+        w1_cur = w1.linear(t)
+        w2_cur = w2.zero()
+        w1_traj.append(w1_cur)
+        w2_traj.append(w2_cur)
+        z11_cur = z11.zero()
+        z21_cur = z21.zero()
+        
+        e1 = calc.sub(w1_cur, x1)
+        e2 = calc.sub(w2_cur, x2)
+        m1 = R11_block.calc(e1, t, t+h)
+        m1_traj.append(m1)
+
+        m2 = R22_block.calc(e2, t, t+h)
+        m2_traj.append(m2)
+
+        u11 = calc.add(z11_cur, m1)
+        u21 = calc.add(z21_cur, m1)
+
+        y11 = P11_block.calc(u11, t, t+h)
+        y21 = P21_block.calc(u21, t, t+h)
+        u12 = m2
+        u22 = m2
+        y12 = P12_block.calc(u12, t, t+h)
+        y22 = P22_block.calc(u22, t, t+h)
+
+        x1 = calc.add(y11, y12)
+        x2 = calc.add(y22, y21)
+        x1_traj.append(x1)
+        x2_traj.append(x2)
+
+# weitere Aufgaben unter diese if Bedingungen
+elif Aufgabennummer == 2:
     for x in range(len(tt)):
         t = tt[x]
         w1_cur = w1.linear(t)
@@ -124,13 +163,56 @@ if Aufgabennummer == 1:
         x1 = calc.add(y11, y12)
         x2 = calc.add(y22, y21)
         x1_traj.append(x1)
+        x2_traj.append(x2)    
+
+
+elif Aufgabennummer == 3:
+    for x in range(len(tt)):
+        t = tt[x]
+        w1_cur = w1.linear(t)
+        w2_cur = w2.zero()
+        w1_traj.append(w1_cur)
+        w2_traj.append(w2_cur)
+        z11_cur = z11.zero()
+        z21_cur = z21.zero()
+
+        #e_R1 = calc.sub(w1_cur, x1)
+        #e_R2 = calc.sub(w2_cur, x2)
+        e_R1 = calc.add(w1_cur, x1)
+        e_R2 = calc.add(w2_cur, x2)
+        y_R11 = R11_block.calc(e_R1, t, t+h)
+        y_R22 = R22_block.calc(e_R2, t, t+h)
+        
+        e_V11 = calc.add(y_R11, y_V12)
+        e_V22 = calc.add(y_R22, y_V21)
+
+        m1 = V11_block.calc(e_V11)
+        m1_traj.append(m1)
+
+        m2 = V22_block.calc(e_V22)
+        m2_traj.append(m2)
+
+        y_P11 = P11_block.calc(m1, t, t+h)
+        y_P21 = P21_block.calc(m1, t, t+h)
+        y_V21 = V21_block.calc(m1, t, t+h)
+        
+        y_P12 = P12_block.calc(m2, t, t+h)
+        y_P22 = P22_block.calc(m2, t, t+h)
+        y_V12 = V12_block.calc(m2)
+
+        x1 = calc.add(y_P11, y_P12)
+        x1_traj.append(x1)
+
+        x2 = calc.add(y_P22, y_P21)
         x2_traj.append(x2)
 
-# weitere Aufgaben unter diese if Bedingungen
-elif Aufgabennummer == 2:
-    pass
-elif Aufgabennummer == 3:
-    pass
+elif Aufgabennummer == 4:
+    for x in range(len(tt)):
+        #
+        #
+        #
+        pass
+
 
 
 # plot data
