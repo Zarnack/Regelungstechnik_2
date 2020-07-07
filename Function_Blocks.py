@@ -2,42 +2,22 @@ import numpy as np
 import scipy.integrate as sci
 
 
-class Calculate:
-    def __init__(self, activate, state_sv):
-        self.state_sv = [state_sv]
-        self.activate = activate
-
-    def ode(self, t, x, u):
-        pass
-
-    def calc(self, u, t0, t1):
-        if self.activate:
-            solv = sci.solve_ivp(self.ode, (t0, t1), self.state_sv, args=(u, ))
-            self.state_sv = solv.y.T[1:, 0]
-            return solv.y.T[0][0]
-        else:
-            return 0
-
-
-class PT1_Glied(Calculate):
-    def __init__(self, Kp, T, activate=True, state_sv=0):
-        super().__init__(activate, state_sv)
+class PT1_Glied():
+    def __init__(self, Kp, T, activate=True):
         self.Kp = Kp
         self.T = T
 
-    def ode(self, t, x, u):
-        x1 = x
-        dxdt = np.array([-x1/self.T+u*self.Kp/self.T])
+    def calc(self, u, x):
+        dxdt = -x/self.T+u*self.Kp/self.T
         return dxdt
 
 
-class I_Glied(Calculate):
-    def __init__(self, Ki, activate=True, state_sv=0):
-        super().__init__(activate, state_sv)
+class I_Glied():
+    def __init__(self, Ki, activate=True):
         self.Ki = Ki
 
-    def ode(self, t, x, u):
-        dxdt = np.array([self.Ki*u])
+    def calc(self, u):
+        dxdt = self.Ki*u
         return dxdt
 
 
@@ -49,9 +29,9 @@ class DT1_Glied():
         self.x1 = 0
         self.activate = activate
 
-    def calc(self, u, t, t2):
+    def calc(self, u, x):
         if self.activate:
-            x1 = self.pt1.calc(u, t, t + t2)
+            x1 = self.pt1.calc(u, x)
             y = (-x1/self.Tp+u/self.Tp) * self.Td
             return y
         else:
@@ -59,35 +39,40 @@ class DT1_Glied():
 
 
 class D_Glied:
-    def __init__(self, Kd, activate=True, u_init=None):
+    def __init__(self, Kd, t_init, activate=True, u_init=None):
         self.Kd = Kd
         self.u_past = u_init
+        self.t_past = t_init
         self.activate = activate
 
-    def calc(self, u, h):
+    def calc(self, u, t):
         if self.activate:
             if self.u_past is None:
                 self.u_past = u
             u_grad = [self.u_past, u]
-            du = np.gradient(u_grad, h)
-            self.u_past = u
+            try:
+                du = np.gradient(u_grad, t-self.t_past)
+            except ValueError:
+                du = [0]
+                self.u_past = u
+                self.t_past = t
+
             return du[0] * self.Kd
         else:
             return 0
 
 
-class IT1_Glied(Calculate):
+class IT1_Glied():
     def __init__(self, Kp, Ti, activate=True, state_sv=0):
-        super().__init__(activate, state_sv)
         self.Kp = Kp
         self.Ti = Ti
         self.P = P_Glied(self.Kp)
         self.I = I_Glied(self.Kp / self.Ti)
 
-    def calc(self, u, t, t2):
+    def calc(self, u):
         y1 = self.P.calc(u)
-        y2 = self.I.calc(u, t, t2)
-        return y1+y2
+        y2 = self.I.calc(u)
+        return y1
 
 
 class P_Glied:
@@ -96,7 +81,7 @@ class P_Glied:
         self.activate = activate
 
     def calc(self, u):
-        if self.activate:
+        if self.activate=
             return self.Kp*u
         else:
             return 0

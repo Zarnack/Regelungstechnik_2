@@ -6,7 +6,7 @@ import Function_Blocks as FB
 import time
 
 # zu plottende Aufgabe, Arbeitspunkt und Strecke auswählen
-Aufgabennummer = 3
+Aufgabennummer = 4
 A1 = True               
 normaleStrecke = True   
 
@@ -15,9 +15,9 @@ class Parameters(object):
 
 # Simulationsparameter
 sim_para = Parameters()  # instance of class Parameters
-sim_para.t0 = 0.0          # start time
-sim_para.tf = 20.0     # final time
-sim_para.h = 0.01
+sim_para.t0 = 0        # start time
+sim_para.tf = 20   # final time
+sim_para.h = 0.001
 
 sim_para.w0 = 0.0
 sim_para.t_step = 1.0
@@ -77,190 +77,107 @@ activation Flag muss nicht übergeben werden (default ist True)
 um Block zu berechnen dessen .calc() Methode aufrufen: 
 calc_Parameter: Eingabe vom Block, aktueller Zeitpunkt, aktueller Zeitpunkt+1 (--> aktueller Zeitpunkt + Schrittweite)
 """
-R11_block = FB.IT1_Glied(Kp_r11, Ti_r11)
-R22_block = FB.IT1_Glied(Kp_r22, Ti_r22)
-P11_block = FB.I_Glied(Ti_p11)
-P21_block = FB.PT1_Glied(Kp_p21, Ti_p21)
-P12_block = FB.I_Glied(Ti_p12)
-P22_block = FB.I_Glied(Ti_p22)
-V11_block = FB.P_Glied(1)
-V22_block = FB.P_Glied(1)
-V12_block = FB.P_Glied(3.2)
-V21_block = FB.DT1_Glied(0.27, 1) 
-calc = FB.Simple_Calc()
+# R11_block = FB.IT1_Glied(Kp_r11, Ti_r11)
+# R22_block = FB.IT1_Glied(Kp_r22, Ti_r22)
+# P11_block = FB.I_Glied(Ti_p11)
+# P21_block = FB.PT1_Glied(Kp_p21, Ti_p21)
+# P12_block = FB.I_Glied(Ti_p12)
+# P22_block = FB.I_Glied(Ti_p22)
+# V11_block = FB.P_Glied(1)
+# V22_block = FB.P_Glied(1)
+# V12_block = FB.P_Glied(3.2)
+# V21_block = FB.DT1_Glied(0.27, 1.0)
+calcus = FB.Simple_Calc()
 
-x1 = 0.0
-x2 = 0.0
-y_V12 = 0
-y_V21 = 0
+
+test = []
+timer = []
+
 h = sim_para.h
 
 # starte Timer zur Simulationszeitberechnung
 time1 = time.perf_counter()
 # Simulation
-if Aufgabennummer == 1:
-    for x in range(len(tt)):
-        t = tt[x]
-        w1_cur = w1.linear(t)
-        w2_cur = w2.zero()
-        w1_traj.append(w1_cur)
-        w2_traj.append(w2_cur)
-        z11_cur = z11.zero()
-        z21_cur = z21.zero()
-        
-        e1 = calc.sub(w1_cur, x1)
-        e2 = calc.sub(w2_cur, x2)
-        m1 = R11_block.calc(e1, t, t+h)
-        m1_traj.append(m1)
 
-        m2 = R22_block.calc(e2, t, t+h)
-        m2_traj.append(m2)
-
-        u11 = calc.add(z11_cur, m1)
-        u21 = calc.add(z21_cur, m1)
-
-        y11 = P11_block.calc(u11, t, t+h)
-        y21 = P21_block.calc(u21, t, t+h)
-        u12 = m2
-        u22 = m2
-        y12 = P12_block.calc(u12, t, t+h)
-        y22 = P22_block.calc(u22, t, t+h)
-
-        x1 = calc.add(y11, y12)
-        x2 = calc.add(y22, y21)
-        x1_traj.append(x1)
-        x2_traj.append(x2)
 
 # weitere Aufgaben unter diese if Bedingungen
-elif Aufgabennummer == 2:
-    for x in range(len(tt)):
-        t = tt[x]
-        w1_cur = w1.linear(t)
-        w2_cur = w2.zero()
-        w1_traj.append(w1_cur)
-        w2_traj.append(w2_cur)
-        z11_cur = z11.zero()
-        z21_cur = z21.zero()
+def ode(t, x):
+    if Aufgabennummer == 1:
+        pass
 
-        e1 = calc.sub(w1_cur, x1)
-        e2 = calc.sub(w2_cur, x2)
-        m1 = R11_block.calc(e1, t, t+h)
-        m1_traj.append(m1)
+    elif Aufgabennummer == 2:
+        pass
 
-        m2 = R22_block.calc(e2, t, t+h)
-        m2_traj.append(m2)
+    elif Aufgabennummer == 3:
+        pass
 
-        u11 = calc.add(z11_cur, m1)
-        u21 = calc.add(z21_cur, m1)
-
-        y11 = P11_block.calc(u11, t, t+h)
-        y21 = P21_block.calc(u21, t, t+h)
-        u12 = m2
-        u22 = m2
-        y12 = P12_block.calc(u12, t, t+h)
-        y22 = P22_block.calc(u22, t, t+h)
-
-        x1 = calc.add(y11, y12)
-        x2 = calc.add(y22, y21)
-        x1_traj.append(x1)
-        x2_traj.append(x2)    
-
-
-elif Aufgabennummer == 3:
-    for x in range(len(tt)):
-        t = tt[x]
-        w1_cur = w1.linear(t)
-        w2_cur = w2.zero()
-        w1_traj.append(w1_cur)
-        w2_traj.append(w2_cur)
-        z11_cur = z11.zero()
-        z21_cur = z21.zero()
-
-        #e_R1 = calc.sub(w1_cur, x1)
-        #e_R2 = calc.sub(w2_cur, x2)
-        e_R1 = calc.add(w1_cur, x1)
-        e_R2 = calc.add(w2_cur, x2)
-        y_R11 = R11_block.calc(e_R1, t, t+h)
-        y_R22 = R22_block.calc(e_R2, t, t+h)
-        
-        e_V11 = calc.add(y_R11, y_V12)
-        e_V22 = calc.add(y_R22, y_V21)
-
-        m1 = V11_block.calc(e_V11)
-        m1_traj.append(m1)
-
-        m2 = V22_block.calc(e_V22)
-        m2_traj.append(m2)
-
-        y_P11 = P11_block.calc(m1, t, t+h)
-        y_P21 = P21_block.calc(m1, t, t+h)
-        y_V21 = V21_block.calc(m1, t, t+h)
-        
-        y_P12 = P12_block.calc(m2, t, t+h)
-        y_P22 = P22_block.calc(m2, t, t+h)
-        y_V12 = V12_block.calc(m2)
-
-        x1 = calc.add(y_P11, y_P12)
-        x1_traj.append(x1)
-
-        x2 = calc.add(y_P22, y_P21)
-        x2_traj.append(x2)
-
-elif Aufgabennummer == 4:
-    for x in range(len(tt)):
-        #
-        #
-        #
+    elif Aufgabennummer == 4:
         pass
 
 
+x0 = np.array([0,0,0,0,0,0,0])
+solv = sci.solve_ivp(lambda t, x:  ode(t, x), (sim_para.t0, sim_para.tf), x0, min_step=1, t_eval=tt)
+x1 = solv.y.T[:,0]
 
-# plot data
+
+
+def plot():
+    # plot data
+    print("Simulationszeit: " + str(time.perf_counter()-time1))
+    fig1, (ax1_1, ax1_2) = plt.subplots(2)
+    ax1_1.plot(tt, w1_traj, '-o', color='blue', MarkerSize=2)
+    ax1_2.plot(tt, w2_traj)
+    # axis label
+    ax1_1.set(xlabel="Zeit", title="Eingangssignal w1")
+    ax1_2.set(xlabel="Zeit", title="Eingangssignal w2")
+    # format x axis
+    plt.tight_layout()
+    # adding grid
+    ax1_1.xaxis.grid(True)
+    ax1_1.yaxis.grid(True)
+    ax1_2.xaxis.grid(True)
+    ax1_2.yaxis.grid(True)
+
+    fig2, (ax2_1, ax2_2) = plt.subplots(2)
+    ax2_1.plot(tt, m1_traj, '-o', color='blue', MarkerSize=2)
+    ax2_2.plot(tt, m2_traj)
+    # axis label
+    ax2_1.set(xlabel="Zeit", title="m1")
+    ax2_2.set(xlabel="Zeit", title="m2")
+
+    # format x axis
+    plt.tight_layout()
+    # adding grid
+    ax2_1.xaxis.grid(True)
+    ax2_1.yaxis.grid(True)
+    ax2_2.xaxis.grid(True)
+    ax2_2.yaxis.grid(True)
+
+    fig1, (ax3_1, ax3_2) = plt.subplots(2)
+    ax3_1.plot(tt, x1_traj)
+    ax3_2.plot(tt, x2_traj)
+    # axis label
+    ax3_1.set(xlabel="Zeit", title="Ausgang x1")
+    ax3_2.set(xlabel="Zeit", title="Ausgang x2")
+    # format x axis
+    plt.tight_layout()
+    # adding grid
+    ax3_1.xaxis.grid(True)
+    ax3_1.yaxis.grid(True)
+    ax3_2.xaxis.grid(True)
+    ax3_2.yaxis.grid(True)
+    #plot anzeigen
+    plt.show()
+
+
 print("Simulationszeit: " + str(time.perf_counter()-time1))
-fig1, (ax1_1, ax1_2) = plt.subplots(2)
-ax1_1.plot(tt, w1_traj, '-o', color='blue', MarkerSize=2)
-ax1_2.plot(tt, w2_traj)
+fig1, (ax1_1) = plt.subplots(1)
+ax1_1.plot(tt, x1, '-o', color='blue', MarkerSize=2)
 # axis label
 ax1_1.set(xlabel="Zeit", title="Eingangssignal w1")
-ax1_2.set(xlabel="Zeit", title="Eingangssignal w2")
 # format x axis
 plt.tight_layout()
 # adding grid
 ax1_1.xaxis.grid(True)
 ax1_1.yaxis.grid(True)
-ax1_2.xaxis.grid(True)
-ax1_2.yaxis.grid(True)
-
-fig2, (ax2_1, ax2_2) = plt.subplots(2)
-ax2_1.plot(tt, m1_traj, '-o', color='blue', MarkerSize=2)
-ax2_2.plot(tt, m2_traj)
-# axis label
-ax2_1.set(xlabel="Zeit", title="m1")
-ax2_2.set(xlabel="Zeit", title="m2")
-
-# format x axis
-plt.tight_layout()
-# adding grid
-ax2_1.xaxis.grid(True)
-ax2_1.yaxis.grid(True)
-ax2_2.xaxis.grid(True)
-ax2_2.yaxis.grid(True)
-
-fig1, (ax3_1, ax3_2) = plt.subplots(2)
-ax3_1.plot(tt, x1_traj)
-ax3_2.plot(tt, x2_traj)
-# axis label
-ax3_1.set(xlabel="Zeit", title="Ausgang x1")
-ax3_2.set(xlabel="Zeit", title="Ausgang x2")
-# format x axis
-plt.tight_layout()
-# adding grid
-ax3_1.xaxis.grid(True)
-ax3_1.yaxis.grid(True)
-ax3_2.xaxis.grid(True)
-ax3_2.yaxis.grid(True)
-#plot anzeigen
 plt.show()
-
-
-
