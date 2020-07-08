@@ -125,4 +125,4 @@ class Inputfunction:
             return self.w1
 
     def zero(self):
-        return 0
+        return 0.0
