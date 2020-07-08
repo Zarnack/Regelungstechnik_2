@@ -81,7 +81,7 @@ class P_Glied:
         self.activate = activate
 
     def calc(self, u):
-        if self.activate=
+        if self.activate == true:  
             return self.Kp*u
         else:
             return 0
