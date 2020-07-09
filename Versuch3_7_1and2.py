@@ -1,12 +1,11 @@
 import numpy as np
-from numpy import cos, sin, tan
 import scipy.integrate as sci
 import matplotlib.pyplot as plt
 import Function_Blocks as FB
 import time
 
 # zu plottende Aufgabe, Arbeitspunkt und Strecke auswählen
-Aufgabennummer = ""
+Aufgabennummer = "1a"
 
 if Aufgabennummer == "1a":
     A1 = True

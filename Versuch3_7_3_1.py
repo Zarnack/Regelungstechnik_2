@@ -1,17 +1,13 @@
 import numpy as np
-from numpy import cos, sin, tan
 import scipy.integrate as sci
 import matplotlib.pyplot as plt
 import Function_Blocks as FB
 import time
 
 # zu plottende Aufgabe, Arbeitspunkt und Strecke auswählen
-Aufgabennummer = 3
 
-#
-if Aufgabennummer == 3:
-    A1 = False              
-    normaleStrecke = True   
+A1 = False
+normaleStrecke = True
 
 class Parameters(object):
     pass
@@ -96,49 +92,40 @@ w1_traj = []
 w2_traj = []
 # weitere Aufgaben unter diese if Bedingungen
 def ode(t, x):
-    if Aufgabennummer == 1:
-        pass
 
-    elif Aufgabennummer == 2:
-        pass
+    x1, x2, x3, x4, e1_dt, e2_dt, x7 = x
 
-    elif Aufgabennummer == 3:
-        
-        x1, x2, x3, x4, e1_dt, e2_dt, x7 = x
+    r1 = x1 + x2
+    e1 = w1.jump(t) - r1
+    x_dot5 = e1     #Hilfsgröße für m1 -> Berechung |e2*dt
 
-        r1 = x1 + x2
-        e1 = w1.jump(t) - r1
-        x_dot5 = e1     #Hilfsgröße für m1 -> Berechung |e2*dt
+    r2 = x3 + x4
+    e2 = w2.zero() - r2
+    x_dot6 = e2
 
-        r2 = x3 + x4
-        e2 = w2.zero() - r2
-        x_dot6 = e2
+    m1 = Kp_r11*e1 + Kp_r11/Ti_r11*e1_dt    #Lösung PI-Regler im Zeitbereich
+    m2 = Kp_r22*e2 + Kp_r22/Ti_r22*e2_dt
 
-        m1 = Kp_r11*e1 + Kp_r11/Ti_r11*e1_dt    #Lösung PI-Regler im Zeitbereich
-        m2 = Kp_r22*e2 + Kp_r22/Ti_r22*e2_dt
+    # Eingang DT1-Glied ohne Abhängigkeit von sich selbst
+    a1 = 1/(1-(Ki_p12 * Kp_p21)/(Ki_p11 * Ki_p22*T_p21)) * (m1-Ki_p12/Ki_p11 * m2 - (Ki_p12 * Kp_p21)/(Ki_p11 * Ki_p22 * T_p21) * x7)
 
-        a1 = 1/(1-(Ki_p12 * Kp_p21)/(Ki_p11 * Ki_p22*T_p21)) * (m1-Ki_p12/Ki_p11 * m2 - (Ki_p12 * Kp_p21)/(Ki_p11 * Ki_p22 * T_p21) * x7) #Eingang DT1-Glied ohne Abhängigkeit von sich selbst
-          
-        x_dot7 = 1/T_p21*(a1-x7)        #DGL PT1-Glied
-        y = x_dot7*(-Kp_p21/Ki_p22)     #Lösung DT1-Glied
+    x_dot7 = 1/T_p21*(a1-x7)        #DGL PT1-Glied
+    y = x_dot7*(-Kp_p21/Ki_p22)     #Lösung DT1-Glied
 
-        a2 = m2 + y
+    a2 = m2 + y
 
-        x_dot1 = Ki_p11*(a1+z11.zero())                    #DGL I-Glied
-        x_dot2 = Ki_p12*(a2)                               #DGL I-Glied    
-        x_dot3 = 1/T_p21*(-x3+Kp_p21*(a1+z21.zero()))      #DGL PT1-Glied
-        x_dot4 = Ki_p22*(a2)                               #DGL I-Glied
+    x_dot1 = Ki_p11*(a1+z11.zero())                    #DGL I-Glied
+    x_dot2 = Ki_p12*(a2)                               #DGL I-Glied
+    x_dot3 = 1/T_p21*(-x3+Kp_p21*(a1+z21.zero()))      #DGL PT1-Glied
+    x_dot4 = Ki_p22*(a2)                               #DGL I-Glied
 
 
-        x_dot = np.array([x_dot1, x_dot2, x_dot3, x_dot4, x_dot5, x_dot6, x_dot7])
-        return x_dot
-
-    elif Aufgabennummer == 4:
-        pass
+    x_dot = np.array([x_dot1, x_dot2, x_dot3, x_dot4, x_dot5, x_dot6, x_dot7])
+    return x_dot
 
 
 x0 = np.array([0,0,0,0,0,0,0])
-solv = sci.solve_ivp(lambda t, x:  ode(t, x), (sim_para.t0, sim_para.tf), x0, min_step=1, t_eval=tt)
+solv = sci.solve_ivp(lambda t, x:  ode(t, x), (sim_para.t0, sim_para.tf), x0, t_eval=tt)
 x1_traj = solv.y.T[:,0] + solv.y.T[:,1] #2 param wahl x
 x2_traj = solv.y.T[:,2] + solv.y.T[:,3]
 

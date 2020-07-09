@@ -1,12 +1,10 @@
 import numpy as np
-from numpy import cos, sin, tan
 import scipy.integrate as sci
 import matplotlib.pyplot as plt
 import Function_Blocks as FB
 import time
 
 # zu plottende Aufgabe, Arbeitspunkt und Strecke auswählen
-Aufgabennummer = 4
 A1 = True
 normaleStrecke = True
 gekoppelt = True
@@ -89,34 +87,32 @@ zp = []
 
 # weitere Aufgaben unter diese if Bedingungen
 def ode(t, x):
-    if Aufgabennummer == 4:
+    x1, x2, x3, x4, x5, x6 = x
 
-        x1, x2, x3, x4, x5, x6 = x
+    w1_cur = w1.linear(t)
+    w2_cur = w2.zero()
 
-        w1_cur = w1.linear(t)
-        w2_cur = w2.zero()
- 
-        e_R11 = w1_cur + (x3+x4)
-        e_R22 = w2_cur + (x1+x2)
- 
-        xdot5 = e_R11
-        xdot6 = e_R22
+    e_R11 = w1_cur + (x3+x4)
+    e_R22 = w2_cur + (x1+x2)
 
-        m1 = x5*Kp_r11/Ti_r11 + Kp_r11*e_R11
-        m2 = x6*Kp_r22/Ti_r22 + Kp_r22*e_R22
-                
-        xdot2 = m2*Ki_p12
-        xdot3 =  1/T_p21*(-x3+Kp_p21*m1)
+    xdot5 = e_R11
+    xdot6 = e_R22
 
-        if gekoppelt:
-           xdot1 = m1*Ki_p11
-           xdot4 = m2*Ki_p22
-        else:
-            xdot1 = 0
-            xdot4 = 0
+    m1 = x5*Kp_r11/Ti_r11 + Kp_r11*e_R11
+    m2 = x6*Kp_r22/Ti_r22 + Kp_r22*e_R22
 
-        xdot=np.array([xdot1, xdot2, xdot3, xdot4, xdot5, xdot6])
-        return xdot
+    xdot2 = m2*Ki_p12
+    xdot3 =  1/T_p21*(-x3+Kp_p21*m1)
+
+    if gekoppelt:
+       xdot1 = m1*Ki_p11
+       xdot4 = m2*Ki_p22
+    else:
+        xdot1 = 0
+        xdot4 = 0
+
+    xdot=np.array([xdot1, xdot2, xdot3, xdot4, xdot5, xdot6])
+    return xdot
    
  
 x0 = np.array([0, 0, 0, 0, 0, 0])
