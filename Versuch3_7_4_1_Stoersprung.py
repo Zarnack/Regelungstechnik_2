@@ -7,12 +7,10 @@ import time
 
 # zu plottende Aufgabe, Arbeitspunkt und Strecke auswählen
 Aufgabennummer = 4
+A1 = True
+normaleStrecke = True
+gekoppelt = False
 
-#
-if Aufgabennummer == 4:
-    A1 = True              
-    normaleStrecke = True  
-    gekoppelt = False
 
 class Parameters(object):
     pass
@@ -77,13 +75,6 @@ else:                   #aus resultierende Strecke
     Kp_r22 = 0.991
     Ti_r22 = 9.950
 
-"""
-Initialisierung der Blöcke
-Übergabeparameter bestehen aus folgenden Blockparametern: Zeit-/Verstärkungskonstanten und activation Flag
-activation Flag muss nicht übergeben werden (default ist True)
-um Block zu berechnen dessen .calc() Methode aufrufen: 
-calc_Parameter: Eingabe vom Block, aktueller Zeitpunkt, aktueller Zeitpunkt+1 (--> aktueller Zeitpunkt + Schrittweite)
-"""
 
 calcus = FB.Simple_Calc()
 
@@ -150,18 +141,15 @@ for tx in range(len(tt)):
     
 
 print("Simulationszeit: " + str(time.perf_counter()-time1))
-fig1, (ax1_1, ax1_2, axz12, axz21, ax2_1, ax2_2, ax3_1, ax3_2) = plt.subplots(8)
-fig1.set_size_inches(10 / 2.54, 50 / 2.54)
+fig1, (ax1_1, ax1_2, axz11, axz21) = plt.subplots(4)
 
 ax1_1.plot(tt, w1_traj) # '-o', color='blue', MarkerSize=2
 ax1_2.plot(tt, w2_traj)
-
-
 # axis label
 ax1_1.set(xlabel="Zeit", title="Eingangssignal w1")
 ax1_2.set(xlabel="Zeit", title="Eingangssignal w2")
-# format x axis
 plt.tight_layout()
+# format x axis
 # adding grid
 ax1_1.xaxis.grid(True)
 ax1_1.yaxis.grid(True)
@@ -169,31 +157,32 @@ ax1_2.xaxis.grid(True)
 ax1_2.yaxis.grid(True)
 
 
-axz12.plot(tt, z12_traj) # '-o', color='blue', MarkerSize=2
+axz11.plot(tt, z11_traj) # '-o', color='blue', MarkerSize=2
 axz21.plot(tt, z21_traj)
 
 
 # axis label
-axz12.set(xlabel="Zeit", title="Störsignal z12")
+axz11.set(xlabel="Zeit", title="Störsignal z11")
 axz21.set(xlabel="Zeit", title="Störsignal z22")
-# format x axis
 plt.tight_layout()
+# format x axis
 # adding grid
-axz12.xaxis.grid(True)
-axz12.yaxis.grid(True)
+axz11.xaxis.grid(True)
+axz11.yaxis.grid(True)
 axz21.xaxis.grid(True)
 axz21.yaxis.grid(True)
 
 
-
+fig2, (ax2_1, ax2_2, ax3_1, ax3_2) = plt.subplots(4)
+plt.tight_layout()
 ax2_1.plot(tt, m1_traj)
 ax2_2.plot(tt, m2_traj)
 
 # axis label
 ax2_1.set(xlabel="Zeit", title="Signal m1")
 ax2_2.set(xlabel="Zeit", title="Signal m2")
-# format x axis
 plt.tight_layout()
+# format x axis
 # adding grid
 ax2_1.xaxis.grid(True)
 ax2_1.yaxis.grid(True)
@@ -206,8 +195,9 @@ ax3_2.plot(tt, x2_traj)
 # axis label
 ax3_1.set(xlabel="Zeit", title="Ausgangssignal x1")
 ax3_2.set(xlabel="Zeit", title="Ausgangssignal x2")
-# format x axis
 plt.tight_layout()
+# format x axis
+
 # adding grid
 ax3_1.xaxis.grid(True)
 ax3_1.yaxis.grid(True)
