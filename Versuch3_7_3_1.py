@@ -152,7 +152,7 @@ ax1_2.plot(tt, w2_traj)
 # axis label
 ax1_1.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Eingangssignal w1")
 ax1_2.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Eingangssignal w2")
-plt.tight_layout()
+
 # format x axis
 # adding grid
 ax1_1.xaxis.grid(True)
@@ -167,14 +167,14 @@ axz21.plot(tt, z21_traj)
 # axis label
 axz11.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Störsignal z11")
 axz21.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Störsignal z21")
-plt.tight_layout()
+#plt.tight_layout()
 # format x axis
 # adding grid
 axz11.xaxis.grid(True)
 axz11.yaxis.grid(True)
 axz21.xaxis.grid(True)
 axz21.yaxis.grid(True)
-filename ="Grafiken/V7_3_1_Eingaenge"
+filename ="Grafiken/V7_3_1_Eingaenge.svg"
 plt.savefig(filename, format="svg")
 
 fig2, (ax2_1, ax2_2) = plt.subplots(2)
@@ -192,7 +192,7 @@ ax2_1.xaxis.grid(True)
 ax2_1.yaxis.grid(True)
 ax2_2.xaxis.grid(True)
 ax2_2.yaxis.grid(True)
-filename ="Grafiken/V7_3_1_m"
+filename ="Grafiken/V7_3_1_m.svg"
 plt.savefig(filename, format="svg")
 
 
@@ -213,6 +213,6 @@ ax3_1.xaxis.grid(True)
 ax3_1.yaxis.grid(True)
 ax3_2.xaxis.grid(True)
 ax3_2.yaxis.grid(True)
-filename ="Grafiken/V7_3_1_Ausgaenge"
+filename ="Grafiken/V7_3_1_Ausgaenge.svg"
 plt.savefig(filename, format="svg")
 plt.show()

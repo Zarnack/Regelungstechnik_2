@@ -3,7 +3,7 @@ import scipy.integrate as sci
 import matplotlib.pyplot as plt
 import Function_Blocks as FB
 import time
-plt.rcParams['text.usetex'] = True
+
 # zu plottende Aufgabe, Arbeitspunkt und Strecke auswählen
 Aufgabennummer = "1a"
 
@@ -38,12 +38,16 @@ elif Aufgabennummer == "2a":
     genaeherteStrecke = True
     gekoppelt = True
     fuehrungssprung = True
-else:
+elif Aufgabennummer == "2b":
     A1 = False
     genaeherteStrecke = True
     gekoppelt = True
     fuehrungssprung = False
-
+else:
+    A1 = True
+    genaeherteStrecke = False
+    gekoppelt = False
+    fuehrungssprung = True
 
 class Parameters(object):
     pass
@@ -161,7 +165,7 @@ for x in tt:
 print("Simulationszeit: " + str(time.perf_counter()-time1))
 fig1, (ax1_1, ax1_2) = plt.subplots(2)
 
-ax1_1.plot(tt, w1_traj, color='blue', MarkerSize=1)
+ax1_1.plot(tt, w1_traj)
 ax1_2.plot(tt, z11_traj)
 # axis label
 ax1_1.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Eingangssignal w1")
@@ -173,11 +177,11 @@ ax1_1.xaxis.grid(True)
 ax1_1.yaxis.grid(True)
 ax1_2.xaxis.grid(True)
 ax1_2.yaxis.grid(True)
-filename ="Grafiken/V7_" + Aufgabennummer + "_Eingaenge"
+filename ="Grafiken/V7_" + Aufgabennummer + "_Eingaenge.svg"
 plt.savefig(filename, format="svg")
 fig2, (ax2_1, ax2_2) = plt.subplots(2)
 
-ax2_1.plot(tt, m1_traj, color='blue', MarkerSize=1)
+ax2_1.plot(tt, m1_traj)
 ax2_2.plot(tt, m2_traj)
 # axis label
 ax2_1.set(xlabel="Zeit in s", title="m1")
@@ -190,7 +194,7 @@ ax2_1.xaxis.grid(True)
 ax2_1.yaxis.grid(True)
 ax2_2.xaxis.grid(True)
 ax2_2.yaxis.grid(True)
-filename ="Grafiken/V7_1_" + Aufgabennummer + "_m"
+filename ="Grafiken/V7_1_" + Aufgabennummer + "_m.svg"
 plt.savefig(filename, format="svg")
 fig3, (ax3_1, ax3_2) = plt.subplots(2)
 
@@ -206,7 +210,7 @@ ax3_1.xaxis.grid(True)
 ax3_1.yaxis.grid(True)
 ax3_2.xaxis.grid(True)
 ax3_2.yaxis.grid(True)
-filename ="Grafiken/V7_1_" + Aufgabennummer + "_Ausgaenge"
+filename ="Grafiken/V7_1_" + Aufgabennummer + "_Ausgaenge.svg"
 plt.savefig(filename, format="svg")
 #plot anzeigen
 plt.show()
