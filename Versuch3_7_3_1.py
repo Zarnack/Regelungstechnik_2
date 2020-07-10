@@ -150,8 +150,8 @@ fig1, (ax1_1, ax1_2, axz11, axz21) = plt.subplots(4)
 ax1_1.plot(tt, w1_traj) # '-o', color='blue', MarkerSize=2
 ax1_2.plot(tt, w2_traj)
 # axis label
-ax1_1.set(xlabel="Zeit", title="Eingangssignal w1")
-ax1_2.set(xlabel="Zeit", title="Eingangssignal w2")
+ax1_1.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Eingangssignal w1")
+ax1_2.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Eingangssignal w2")
 plt.tight_layout()
 # format x axis
 # adding grid
@@ -161,13 +161,13 @@ ax1_2.xaxis.grid(True)
 ax1_2.yaxis.grid(True)
 
 
-axz11.plot(tt, z11_traj) # '-o', color='blue', MarkerSize=2
+axz11.plot(tt, z11_traj) 
 axz21.plot(tt, z21_traj)
 
 
 # axis label
-axz11.set(xlabel="Zeit", title="Störsignal z11")
-axz21.set(xlabel="Zeit", title="Störsignal z22")
+axz11.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Störsignal z11")
+axz21.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Störsignal z21")
 plt.tight_layout()
 # format x axis
 # adding grid
@@ -183,8 +183,8 @@ ax2_1.plot(tt, m1_traj)
 ax2_2.plot(tt, m2_traj)
 
 # axis label
-ax2_1.set(xlabel="Zeit", title="Signal m1")
-ax2_2.set(xlabel="Zeit", title="Signal m2")
+ax2_1.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Signal m1")
+ax2_2.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Signal m2")
 plt.tight_layout()
 # format x axis
 # adding grid
@@ -197,8 +197,8 @@ ax3_1.plot(tt, x1_traj)
 ax3_2.plot(tt, x2_traj)
 
 # axis label
-ax3_1.set(xlabel="Zeit", title="Ausgangssignal x1")
-ax3_2.set(xlabel="Zeit", title="Ausgangssignal x2")
+ax3_1.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Ausgangssignal x1")
+ax3_2.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Ausgangssignal x2")
 plt.tight_layout()
 # format x axis
 

@@ -158,8 +158,8 @@ axz21.plot(tt, z21_traj)
 
 
 # axis label
-axz12.set(xlabel="Zeit", title="Störsignal z12")
-axz21.set(xlabel="Zeit", title="Störsignal z22")
+axz12.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Störsignal z12")
+axz21.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Störsignal z21")
 plt.tight_layout()
 # format x axis
 # adding grid
@@ -175,8 +175,8 @@ ax2_1.plot(tt, m1_traj)
 ax2_2.plot(tt, m2_traj)
 
 # axis label
-ax2_1.set(xlabel="Zeit", title="Signal m1")
-ax2_2.set(xlabel="Zeit", title="Signal m2")
+ax2_1.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Signal m1")
+ax2_2.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Signal m2")
 plt.tight_layout()
 # format x axis
 # adding grid
@@ -189,8 +189,8 @@ ax3_1.plot(tt, x1_traj)
 ax3_2.plot(tt, x2_traj)
 
 # axis label
-ax3_1.set(xlabel="Zeit", title="Ausgangssignal x1")
-ax3_2.set(xlabel="Zeit", title="Ausgangssignal x2")
+ax3_1.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Ausgangssignal x1")
+ax3_2.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Ausgangssignal x2")
 plt.tight_layout()
 # format x axis
 
