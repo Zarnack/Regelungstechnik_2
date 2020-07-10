@@ -137,7 +137,7 @@ for tx in range(len(tt)):
     
 
 print("Simulationszeit: " + str(time.perf_counter()-time1))
-fig1, (ax1_1, ax1_2, axz11, axz21) = plt.subplots(4)
+fig1, (ax1_1, ax1_2, axz12, axz21) = plt.subplots(4)
 
 ax1_1.plot(tt, w1_traj) # '-o', color='blue', MarkerSize=2
 ax1_2.plot(tt, w2_traj)
@@ -153,18 +153,18 @@ ax1_2.xaxis.grid(True)
 ax1_2.yaxis.grid(True)
 
 
-axz11.plot(tt, z11_traj) # '-o', color='blue', MarkerSize=2
+axz12.plot(tt, z12_traj) # '-o', color='blue', MarkerSize=2
 axz21.plot(tt, z21_traj)
 
 
 # axis label
-axz11.set(xlabel="Zeit", title="Störsignal z11")
+axz12.set(xlabel="Zeit", title="Störsignal z12")
 axz21.set(xlabel="Zeit", title="Störsignal z22")
 plt.tight_layout()
 # format x axis
 # adding grid
-axz11.xaxis.grid(True)
-axz11.yaxis.grid(True)
+axz12.xaxis.grid(True)
+axz12.yaxis.grid(True)
 axz21.xaxis.grid(True)
 axz21.yaxis.grid(True)
 

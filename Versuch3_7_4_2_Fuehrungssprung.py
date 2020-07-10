@@ -156,8 +156,8 @@ axz21.plot(tt, z21_traj)
 
 
 # axis label
-axz11.set(xlabel="Zeit", title="Störsignal z11")
-axz21.set(xlabel="Zeit", title="Störsignal z22")
+axz11.set(xlabel="Zeit", title="Störsignal z12")
+axz21.set(xlabel="Zeit", title="Störsignal z21")
 plt.tight_layout()
 # format x axis
 # adding grid
