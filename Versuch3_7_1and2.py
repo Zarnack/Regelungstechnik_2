@@ -7,6 +7,8 @@ import time
 # zu plottende Aufgabe, Arbeitspunkt und Strecke auswählen
 Aufgabennummer = "1a"
 
+
+
 if Aufgabennummer == "1a":
     A1 = True
     genaeherteStrecke = False
@@ -71,20 +73,19 @@ z21 = FB.Inputfunction(sim_para.t_step, sim_para.w0, sim_para.z21, sim_para.delt
 
 # Listen in denen Ergebnisse für das spätere Plotten gespeichert werden
 
-
 # Parameterfestlegung
 if A1:
-    Ti_p11 = 0.4
-    Ti_p12 = -0.8
+    Ki_p11 = 0.4
+    Ki_p12 = -0.8
     Kp_p21 = -0.2
     Ti_p21 = 1
-    Ti_p22 = 1.2
+    Ki_p22 = 1.2
 else:                   #A2
-    Ti_p11 = 0.4
-    Ti_p12 = -1.28
+    Ki_p11 = 0.4
+    Ki_p12 = -1.28
     Kp_p21 = -0.32
     Ti_p21 = 1
-    Ti_p22 = 1.2
+    Ki_p22 = 1.2
 
 if genaeherteStrecke:
     Kp_r11 = 2.972
@@ -124,15 +125,15 @@ def ode(t, x):
     m1 = x3 + Kp_r11*e_R11
     m2 = x4 + Kp_r22*e_R22
 
-    xdot5 = (m1+z11_cur)/Ti_p11
+    xdot5 = (m1+z11_cur) * Ki_p11
     if gekoppelt:
         xdot6 = -x6/Ti_p21+m1*Kp_p21/Ti_p21
-        xdot7 = m2 / Ti_p12
+        xdot7 = m2 * Ki_p12
     else:
         xdot6 = 0
         xdot7 = 0
 
-    xdot8 = m2/Ti_p22
+    xdot8 = m2 * Ki_p22
 
     xdot=np.array([xdot3, xdot4, xdot5, xdot6, xdot7, xdot8])
     return xdot
@@ -160,11 +161,12 @@ for x in tt:
 # plot data
 print("Simulationszeit: " + str(time.perf_counter()-time1))
 fig1, (ax1_1, ax1_2) = plt.subplots(2)
-ax1_1.plot(tt, w1_traj, '-o', color='blue', MarkerSize=2)
+
+ax1_1.plot(tt, w1_traj, color='blue', MarkerSize=1)
 ax1_2.plot(tt, z11_traj)
 # axis label
-ax1_1.set(xlabel="Zeit", title="Eingangssignal w1")
-ax1_2.set(xlabel="Zeit", title="Eingangssignal z11")
+ax1_1.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Eingangssignal w1")
+ax1_2.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Störsignal z11")
 # format x axis
 plt.tight_layout()
 # adding grid
@@ -172,13 +174,15 @@ ax1_1.xaxis.grid(True)
 ax1_1.yaxis.grid(True)
 ax1_2.xaxis.grid(True)
 ax1_2.yaxis.grid(True)
-
+filename ="Grafiken/V7_1_" + Aufgabennummer + "_Eingaenge"
+plt.savefig(filename, format="svg")
 fig2, (ax2_1, ax2_2) = plt.subplots(2)
-ax2_1.plot(tt, m1_traj, '-o', color='blue', MarkerSize=2)
+
+ax2_1.plot(tt, m1_traj, color='blue', MarkerSize=1)
 ax2_2.plot(tt, m2_traj)
 # axis label
-ax2_1.set(xlabel="Zeit", title="m1")
-ax2_2.set(xlabel="Zeit", title="m2")
+ax2_1.set(xlabel="Zeit in s", title="m1")
+ax2_2.set(xlabel="Zeit in s", title="m2")
 
 # format x axis
 plt.tight_layout()
@@ -187,13 +191,15 @@ ax2_1.xaxis.grid(True)
 ax2_1.yaxis.grid(True)
 ax2_2.xaxis.grid(True)
 ax2_2.yaxis.grid(True)
-
+filename ="Grafiken/V7_1_" + Aufgabennummer + "_m"
+plt.savefig(filename, format="svg")
 fig3, (ax3_1, ax3_2) = plt.subplots(2)
+
 ax3_1.plot(tt, x1_traj)
 ax3_2.plot(tt, x2_traj)
 # axis label
-ax3_1.set(xlabel="Zeit", title="Ausgang x1")
-ax3_2.set(xlabel="Zeit", title="Ausgang x2")
+ax3_1.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Ausgang x1")
+ax3_2.set(xlabel="Zeit in s", ylabel="Spannung in V", title="Ausgang x2")
 # format x axis
 plt.tight_layout()
 # adding grid
@@ -201,6 +207,9 @@ ax3_1.xaxis.grid(True)
 ax3_1.yaxis.grid(True)
 ax3_2.xaxis.grid(True)
 ax3_2.yaxis.grid(True)
+filename ="Grafiken/V7_1_" + Aufgabennummer + "_Ausgaenge"
+plt.savefig(filename, format="svg")
 #plot anzeigen
 plt.show()
+
 
