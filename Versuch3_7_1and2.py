@@ -3,10 +3,9 @@ import scipy.integrate as sci
 import matplotlib.pyplot as plt
 import Function_Blocks as FB
 import time
-
+plt.rcParams['text.usetex'] = True
 # zu plottende Aufgabe, Arbeitspunkt und Strecke auswählen
 Aufgabennummer = "1a"
-
 
 
 if Aufgabennummer == "1a":
@@ -174,7 +173,7 @@ ax1_1.xaxis.grid(True)
 ax1_1.yaxis.grid(True)
 ax1_2.xaxis.grid(True)
 ax1_2.yaxis.grid(True)
-filename ="Grafiken/V7_1_" + Aufgabennummer + "_Eingaenge"
+filename ="Grafiken/V7_" + Aufgabennummer + "_Eingaenge"
 plt.savefig(filename, format="svg")
 fig2, (ax2_1, ax2_2) = plt.subplots(2)
 

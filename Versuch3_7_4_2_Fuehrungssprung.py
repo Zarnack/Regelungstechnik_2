@@ -166,8 +166,10 @@ axz11.yaxis.grid(True)
 axz21.xaxis.grid(True)
 axz21.yaxis.grid(True)
 
+filename ="Grafiken/V7_4_2_Eingaenge"
+plt.savefig(filename, format="svg")
 
-fig2, (ax2_1, ax2_2, ax3_1, ax3_2) = plt.subplots(4)
+fig2, (ax2_1, ax2_2) = plt.subplots(2)
 plt.tight_layout()
 ax2_1.plot(tt, m1_traj)
 ax2_2.plot(tt, m2_traj)
@@ -182,7 +184,10 @@ ax2_1.xaxis.grid(True)
 ax2_1.yaxis.grid(True)
 ax2_2.xaxis.grid(True)
 ax2_2.yaxis.grid(True)
+filename ="Grafiken/V7_4_2_m"
+plt.savefig(filename, format="svg")
 
+fig3, (ax3_1, ax3_2) = plt.subplots(2)
 ax3_1.plot(tt, x1_traj)
 ax3_2.plot(tt, x2_traj)
 
@@ -197,5 +202,6 @@ ax3_1.xaxis.grid(True)
 ax3_1.yaxis.grid(True)
 ax3_2.xaxis.grid(True)
 ax3_2.yaxis.grid(True)
-
+filename ="Grafiken/V7_4_2_Ausgaenge"
+plt.savefig(filename, format="svg")
 plt.show()
