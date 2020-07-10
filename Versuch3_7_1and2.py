@@ -5,7 +5,7 @@ import Function_Blocks as FB
 import time
 
 # zu plottende Aufgabe, Arbeitspunkt und Strecke auswählen
-Aufgabennummer = "1a"
+Aufgabennummer = "2b"
 
 
 if Aufgabennummer == "1a":
@@ -184,8 +184,8 @@ fig2, (ax2_1, ax2_2) = plt.subplots(2)
 ax2_1.plot(tt, m1_traj)
 ax2_2.plot(tt, m2_traj)
 # axis label
-ax2_1.set(xlabel="Zeit in s", title="m1")
-ax2_2.set(xlabel="Zeit in s", title="m2")
+ax2_1.set(xlabel="Zeit in s", ylabel="Spannung in V", title="m1")
+ax2_2.set(xlabel="Zeit in s", ylabel="Spannung in V", title="m2")
 
 # format x axis
 plt.tight_layout()

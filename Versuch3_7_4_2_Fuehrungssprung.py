@@ -136,7 +136,7 @@ for tx in range(len(tt)):
 
 print("Simulationszeit: " + str(time.perf_counter()-time1))
 fig1, (ax1_1, ax1_2, axz11, axz21) = plt.subplots(4)
-
+plt.subplots_adjust(hspace=0.5)
 ax1_1.plot(tt, w1_traj) # '-o', color='blue', MarkerSize=2
 ax1_2.plot(tt, w2_traj)
 # axis label

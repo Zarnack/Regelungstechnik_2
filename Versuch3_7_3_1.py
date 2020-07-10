@@ -107,12 +107,16 @@ def ode(t, x):
     m2 = Kp_r22*e2 + Kp_r22/Ti_r22*e2_dt
 
     # Eingang DT1-Glied ohne Abhängigkeit von sich selbst
-    a1 = 1/(1-(Ki_p12 * Kp_p21)/(Ki_p11 * Ki_p22*T_p21)) * (m1-Ki_p12/Ki_p11 * m2 - (Ki_p12 * Kp_p21)/(Ki_p11 * Ki_p22 * T_p21) * x7)
+    #a1 = 1/(1-(Ki_p12 * Kp_p21)/(Ki_p11 * Ki_p22*T_p21)) * (m1-Ki_p12/Ki_p11 * m2 - (Ki_p12 * Kp_p21)/(Ki_p11 * Ki_p22 * T_p21) * x7)
+
+    M = np.array([[1, Ki_p12/Ki_p11], [Kp_p21/(T_p21*Ki_p22), 1]])
+    C = np.array([m1, m2+x7*Kp_p21/(T_p21*Ki_p22)])
+    a1, a2 = np.linalg.solve(M, C)
 
     x_dot7 = 1/T_p21*(a1-x7)        #DGL PT1-Glied
-    y = x_dot7*(-Kp_p21/Ki_p22)     #Lösung DT1-Glied
 
-    a2 = m2 + y
+    #y = x_dot7*(-Kp_p21/Ki_p22)     #Lösung DT1-Glied
+    #a2 = m2 + y
 
     x_dot1 = Ki_p11*(a1+z11.zero())                    #DGL I-Glied
     x_dot2 = Ki_p12*(a2)                               #DGL I-Glied
@@ -146,6 +150,7 @@ for tx in range(len(tt)):
 
 print("Simulationszeit: " + str(time.perf_counter()-time1))
 fig1, (ax1_1, ax1_2, axz11, axz21) = plt.subplots(4)
+plt.subplots_adjust(hspace=0.5)
 
 ax1_1.plot(tt, w1_traj) # '-o', color='blue', MarkerSize=2
 ax1_2.plot(tt, w2_traj)
